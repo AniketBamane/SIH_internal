@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Edit, Plus, Minus, Check, ArrowLeft, Trash } from 'lucide-react'; // Import Lucide React icons
-import authStore from '@/store/authStore';
+import authStore from '@/store/AdminStore';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
