@@ -2,6 +2,7 @@ import { uploadFileOnCloudinary } from "../config/cloudinary.js"
 import transporter from "../config/transporter.js"
 import User from "../model/user.js"
 import { verificationTemplate } from "../Template/verification.js"
+import Contact from "../model/contact.js"
 export const signup  = async (req, res, next) => {
   try{
     const { name, email, password, address, role, bio} = req.body
@@ -123,6 +124,20 @@ export const getCurrentUser = async(req,res,next)=>{
     })
   }
 }
+
+export const sendMessage = async(req,res,next)=>{
+  try{
+    const { message, email ,name} = req.body;
+    const contact = new Contact({ message, email ,name})
+    await contact.save()
+    res.status(200).json({message: "Message sent successfully"})
+  }catch(err){
+    res.status(500).json({
+      message:err.message
+    })
+  }
+}
+
 
 // export const updateProfile = async(req,res,next)=>{
 //   try{

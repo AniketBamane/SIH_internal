@@ -1,5 +1,5 @@
 import express from 'express';
-import {  getCurrentUser, login, logout, signup, updateProfile, verifyEmail } from '../controller/auth.js';
+import {  getCurrentUser, login, logout, sendMessage, signup, updateProfile, verifyEmail } from '../controller/auth.js';
 import upload from '../config/multer.js';
 import checkAuthentication from '../middleware/checkAuthentication.js';
 
@@ -16,5 +16,7 @@ router.route('/logout').get(logout)
 router.route("/update-profile").put(checkAuthentication,upload,updateProfile)
 
 router.route("/getCurrentUser").get(checkAuthentication,getCurrentUser)
+
+router.route("/send-message").post(checkAuthentication,sendMessage)
 
 export default router
