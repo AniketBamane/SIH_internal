@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 const StorySchema = new mongoose.Schema({
   artisanId: { type: mongoose.Schema.Types.ObjectId,ref:"User" ,required: true },
   title: { type: String, required: true },

@@ -9,7 +9,11 @@ const app = express()
 
 //import routes
 import authRouter from "./router/auth.js"
-
+import cartRouter from "./router/cart.js"
+import orderRouter from "./router/order.js"
+import productRouter from "./router/product.js"
+import storyRouter from "./router/story.js"
+import workshopRouter from "./router/workshop.js"
 // setup cors 
 app.use(cors({
   origin: process.env.FRONTEND_URL, // allow requests from this origin
@@ -22,6 +26,16 @@ app.use(cookieParser())
 
 // import middlewares
 app.use("/api/auth",authRouter)
+
+app.use("/api/cart",cartRouter)
+
+app.use("/api/order",orderRouter)
+
+app.use("/api/product",productRouter)
+
+app.use("/api/story",storyRouter)
+
+app.use("/api/workshop",workshopRouter)
 
 
 connectToDb().then(()=>{

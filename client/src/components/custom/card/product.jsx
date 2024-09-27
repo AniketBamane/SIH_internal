@@ -1,8 +1,10 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'; // Shadcn UI Card
 import { Button } from '@/components/ui/button'; // Shadcn UI Button
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import UpdateProduct from '../form/UpdateProduct';
 
-const Product = ({ product }) => {
+const Product = ({ product,page="" }) => {
   return (
     <Card className="w-full max-w-sm mx-auto rounded-lg shadow-md overflow-hidden">
       {/* Product Image */}
@@ -28,7 +30,16 @@ const Product = ({ product }) => {
 
       {/* Footer with Action Button */}
       <CardFooter className="p-4 flex justify-between">
-        <Button className="bg-[#8B4513] text-white">Add to Cart</Button>
+      { page != "myproducts" ?  <Button className="bg-[#8B4513] text-white">Add to Cart</Button> : 
+     <Dialog>
+      <DialogTrigger>
+      <Button className="bg-[#8B4513] text-white">edit product</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <UpdateProduct id={product._id} />
+      </DialogContent>
+     </Dialog>
+      }
       </CardFooter>
     </Card>
   );

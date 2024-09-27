@@ -13,6 +13,10 @@ import Signup from './pages/Auth/Signup'
 import Verification from './pages/Auth/Verification'
 import MarketPlace from './pages/MarketPlace'
 import SitePage from './pages/SitePage'
+import MyProducts from './pages/Admin/MyProducts'
+import MyWorkshops from './pages/Admin/MyWorkshops'
+import MySites from './pages/Admin/MySites'
+import AdminLayout from './components/custom/layout/AdminLayout'
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -37,11 +41,11 @@ function App() {
       <Route path='/heritage-sites' element={<SitePage />} />
       {/* <Route path='/search' element={<SearchPage />} /> */}
       </Route>
-      {/* <Route path='/auth/'  element={<AdminLayout />}>
-        <Route path='get-restaurants' element={<Restaurant />} />
-        <Route path='restaurant/:id' element={<RestaurantDetail />} />
-        <Route path="orders" element={<AdminOrder />} />
-       </Route> */}
+      <Route path='/auth/'  element={<AdminLayout />}>
+        <Route path='my-products' element={<MyProducts />} />
+        <Route path='my-workshops' element={<MyWorkshops />} />
+        <Route path="my-sites" element={<MySites />} />
+       </Route>
       <Route path="*" element={<h1>Page Not Found</h1>} />
     </Routes>
   )

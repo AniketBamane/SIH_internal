@@ -1,5 +1,5 @@
 import express from 'express';
-import checkAuthentication from '../middleware/checkAuthentication';
+import checkAuthentication from '../middleware/checkAuthentication.js';
 import { addItemIntoCart, decreaseQuantityOfDishInCart, deleteCart, increaseQuantityOfDishInCart, removeItemFromCart } from '../controller/cart.js';
 
 const router = express.Router()
@@ -12,6 +12,6 @@ router.route("/increase-quantity-cart").put(checkAuthentication,increaseQuantity
 
 router.route("/decrease-quantity-cart").put(checkAuthentication,decreaseQuantityOfDishInCart)
 
-router.delete("/delete-cart").delete(checkAuthentication,deleteCart)
+router.route("/delete-cart").delete(checkAuthentication,deleteCart)
 
 export default router;

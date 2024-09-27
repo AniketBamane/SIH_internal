@@ -1,4 +1,6 @@
 import Product from "@/components/custom/card/product";
+import CarouselComponent from "@/components/custom/carousel/Carousel";
+import Carousel from "@/components/custom/carousel/Carousel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
@@ -15,6 +17,7 @@ const MarketPlace = () => {
 
   return (
    <div>
+        <CarouselComponent />
     <div className="flex w-1/2  mx-auto space-x-5 mb-3 mt-5">
         <Input
         type="text"

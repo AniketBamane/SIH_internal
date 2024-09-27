@@ -30,6 +30,7 @@ const Verification = () => {
         toast('Email verified successfully')
         
         navigate("/signup")
+        
       }else{
         toast.error("entered verification code is not valid !")
       }

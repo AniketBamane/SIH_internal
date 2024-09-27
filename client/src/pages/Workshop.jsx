@@ -1,4 +1,4 @@
-import Story from "@/components/custom/card/Story";
+import Workshop from "@/components/custom/card/Workshop";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
@@ -69,7 +69,7 @@ const WorkshopPage = () => {
       {/* Other Workshops in Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {workshops.slice(1).map((workshop, index) => (
-          <Story key={index} workshop={workshop} isFirst={false} />
+          <Workshop key={index} workshop={workshop} isFirst={false} />
         ))}
       </div>
     </div>

@@ -10,7 +10,8 @@ export const createWorkshop = async(req,res,next) => {
     const workshop = new WorkShop({title, description, date, price, image:imageUrl, artisanId:user});
     await workshop.save();
     if(workshop){
-      res.status(201).json(workshop);
+      const createdWorkshop = await WorkShop.findById(workshop._id).populate(['participants','artisanId'])
+      res.status(201).json({workshop: createdWorkshop});
     }else{
       res.status(400).json({message: 'Failed to create workshop'});
     }
@@ -21,8 +22,8 @@ export const createWorkshop = async(req,res,next) => {
 
 export const getWorkshops = async(req,res,next) => {
   try{
-    const workshops = await WorkShop.find();
-    res.status(200).json(workshops);
+    const workshops = await WorkShop.find().populate(['artisanId','participants']);
+    res.status(200).json({workshops});
   }catch(err){
     res.status(500).json({message: err.message});
   }

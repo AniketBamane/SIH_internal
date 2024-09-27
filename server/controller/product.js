@@ -6,11 +6,12 @@ export const createProduct = async(req,res,next) => {
     const picture = req.file
     const user = req.user.id
     const imageUrl = await uploadFileOnCloudinary(picture)
-    const product = new Product({name,description,price,category,image:imageUrl,stock,artisanId:user,story:storyId});
+    const product = new Product({name,description,price,category:category.split(","),image:imageUrl,stock,artisanId:user,story:storyId});
     await product.save();
+    const createdProduct = await Product.findById(product._id).populate(['artisanId','story'])
     res.status(201).json({
       message:"Product created successfully !",
-      product
+      product: createdProduct
     });
   }catch(err){
     res.status(500).json({message: err.message});
@@ -20,8 +21,8 @@ export const createProduct = async(req,res,next) => {
 export const getProducts = async(req,res,next) => {
   try{
     const user = req.user.id;
-    const products = await Product.find({artisanId: user}).sort({createdAt: -1});
-    res.status(200).json(products);
+    const products = await Product.find({artisanId: user}).sort({createdAt: -1}).populate(["artisanId","story"]);
+    res.status(200).json({products});
   }catch(err){
     res.status(500).json({message: err.message});
   }
@@ -54,7 +55,7 @@ export const updateProduct = async(req,res,next) => {
     if(category) updatedProduct.category = category;
     if(stock) updatedProduct.stock = stock;
     await updatedProduct.save();
-    res.status(200).json(updatedProduct);
+    res.status(200).json({product:updatedProduct});
   }catch(err){
     res.status(500).json({message: err.message});
   }

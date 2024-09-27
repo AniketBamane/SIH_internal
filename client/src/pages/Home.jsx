@@ -1,7 +1,7 @@
 import React from "react";
 import { Input } from '@/components/ui/input';  // Shadcn UI Input
 import { Button } from '@/components/ui/button';  // Shadcn UI Button
-import Story from "@/components/custom/card/Story";
+import Story from "@/components/custom/card/Workshop";
 import Artisan from "@/components/custom/card/Artisan";
 import Accordian from "@/components/custom/Accordian/accordian";
 const workshops = [

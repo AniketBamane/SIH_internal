@@ -1,13 +1,14 @@
+import mongoose from 'mongoose';
 const ProductSchema = new mongoose.Schema({
   artisanId: { type: mongoose.Schema.Types.ObjectId, ref:"User", required: true },
   name: { type: String, required: true },
   description: { type: String, required: true },
   price: { type: Number, required: true },
-  category: { type: String, required: true },
+  category: [{ type: String, required: true }],
   image: String, 
   stock: { type: Number, required: true },
   story:{
-    type:mongoose.Schema.types.ObjectId,
+    type:mongoose.Schema.Types.ObjectId,
     ref:"Story",
     required:true
   }

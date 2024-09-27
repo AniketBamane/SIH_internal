@@ -3,6 +3,7 @@ import Story from "../model/story.js";
 
 export const createStory = async(req,res,next)=>{
   try{
+    console.log("......in create story")
     const {title ,content,location } = req.body
     const picture = req.file
     const user = req.user.id
@@ -15,7 +16,8 @@ export const createStory = async(req,res,next)=>{
       location
     });
     await newStory.save();
-    res.status(201).json(newStory);
+    const createdStory = await Story.findById(newStory._id).populate("artisanId")
+    res.status(201).json({newStory:createdStory});
   }catch(err){
     res.status(400).json({message: err.message});
   }
@@ -23,8 +25,8 @@ export const createStory = async(req,res,next)=>{
 
 export const getAllStories = async(req,res,next)=>{
   try{
-    const stories = await Story.find().sort({createdAt: -1});
-    res.status(200).json(stories);
+    const stories = await Story.find().sort({createdAt: -1}).populate("artisanId");
+    res.status(200).json({stories});
   }catch(err){
     res.status(500).json({message: err.message});
   }
@@ -46,7 +48,7 @@ export const updateStory = async(req,res,next)=>{
   try{
     const {title,content,location} = req.body
     const picture = req.file
-    const story = await Story.findById(req.params.id)
+    const story = await Story.findById(req.params.id);
     if(!story){
       return res.status(404).json({message: 'Story not found'});
     }
@@ -58,7 +60,8 @@ export const updateStory = async(req,res,next)=>{
     if(content) story.content = content
     if(location) story.location = location
     await story.save();
-    res.status(200).json(story);
+    const updateStory = await Story.findById(story._id).populate("artisanId");;
+    res.status(200).json({story});
   }catch(err){
     res.status(400).json({message: err.message});
   }

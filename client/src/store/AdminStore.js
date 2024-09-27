@@ -6,38 +6,39 @@ import { toast } from "sonner";
 const AdminStore = create(
   persist(
     (set) => ({
-      loading: false,
-      restaurants:[],
-      restaurant:{},
-      orders:[],
-      createRestaurant:async(restaurantDetail)=>{
+      loading:false,
+      sites:[],
+      site:{},
+      workshops:[],
+      products:[],
+      //operations
+      createSite : async(data)=>{
+        console.log(data);
         try{
           set({loading:true})
-          const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/restaurant/createRestaurant`, restaurantDetail, {
+          const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/story/create-story`, data, {
             withCredentials: true,
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
-          if(response.data != null){
-            set(state=>(
-              {
-                loading:false,
-                restaurants: [...state.restaurants, response.data.restaurant],
-              }
-            ))
-            toast.success(response.data.message);
+          console.log(response)
+          if(response.data!= null){
+            set(state=>({
+              sites: [...state.sites, response.data.newStory],
+            }))
+            toast.success("site is created successfully !")
           }
         }catch(err){
-          toast.error(err.response.data.message);
+          toast.error(err.response.data.message)
         }finally{
           set({loading:false})
         }
       },
-      updateRestaurant: async(restaurantDetail,id)=>{
+      createWorkshop: async(data)=>{
         try{
           set({loading:true})
-          const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/restaurant/updateRestaurant/${id}`, restaurantDetail, {
+          const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/workshop/create-workshop`, data, {
             withCredentials: true,
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -45,124 +46,133 @@ const AdminStore = create(
           });
           if(response.data!= null){
             set(state=>({
-              restaurants: state.restaurants.map(r=>r._id === restaurantDetail._id? response.data.restaurant : r),
-              loading:false,
-              restaurant:response.data.restaurant
+              workshops: [...state.workshops, response.data.workshop],
             }))
-            toast.success(response.data.message);
+            toast.success("workshop created successfully")
           }
         }catch(err){
-          toast.error(err.response.data.message);
+          toast.error(err.response.data.message)
         }finally{
           set({loading:false})
         }
       },
-      deleteRestaurant: async(restaurantID)=>{
+      createProduct:async(data)=>{
         try{
           set({loading:true})
-          const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/restaurant/deleteRestaurant/${restaurantID}`, {
-            withCredentials: true,
-          });
-          if(response.data!= null){
-            set(state=>({
-              restaurants: state.restaurants.filter(r=>r._id!== restaurantID),
-              loading:false,
-            }))
-            toast.success(response.data.message);
-          }
-        }catch(err){
-          toast.error(err.response.data.message);
-        }finally{
-          set({loading:false})
-        }
-      },
-      getRestaurants: async()=>{
-        try{
-          set({loading:true})
-          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/restaurant/getRestaurants`, {
-            withCredentials: true,
-          });
-          if(response.data!= null){
-            set({
-              loading: false,
-              restaurants: response.data.restaurants,
-            })
-          }
-        }catch(err){
-          toast.error(err.response.data.message);
-        }finally{
-          set({loading:false})
-        }
-      },
-      getOrders: async()=>{
-        try{
-          set({loading:true})
-          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/restaurant/getOrders`, {
-            withCredentials: true,
-          });
-          if(response.data!= null){
-            set({
-              loading: false,
-              orders: response.data.orders,
-            })
-          }
-        }catch(err){
-          toast.error(err.response.data.message);
-        }finally{
-          set({loading:false})
-        }
-      },
-      updateOrder:async(orderId,formData)=>{
-        try{
-          set({loading:true})
-          const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/order/updateOrder/${orderId}`, formData, {
-            withCredentials: true,
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-          if(response.data!= null){
-            set(state=>({
-              orders: state.orders.map(o=>o._id === orderId? response.data.order : o),
-              loading: false,
-            }))
-            toast.success(response.data.message);
-          }
-        }catch(err){
-          toast.error(err.response.data.message);
-        }finally{
-          set({loading:false})
-        }
-      },
-      createDish:async(dishDetails)=>{
-        try{
-          set({loading:true})
-          const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/dish/createDish`, dishDetails, {
+          const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/product/create-product`, data, {
             withCredentials: true,
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
           if(response.data!= null){
-            set(state=>(
-              {
-                loading: false,
-                restaurants: state.restaurants.map(r=>r._id === response.data.dish.restaurant._id? {...r, dishes:[...r.dishes, response.data.dish]} : r),
-                restaurant:{...state.restaurant,dishes:[...state.restaurant.dishes, response.data.dish]}
-              }
-            ))
-            toast.success(response.data.message);
+            set(state=>({
+              products: [...state.products, response.data.product],
+            }))
+            toast.success(response.data.message)
           }
         }catch(err){
-          toast.error(err.response.data.message);
+          toast.error(err.response.data.message)
         }finally{
           set({loading:false})
         }
       },
-      updateDish:async(dishDetails,id)=>{
+      //get operations
+      getSites: async()=>{
         try{
           set({loading:true})
-          const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/dish/updateDish/${id}`, dishDetails, {
+          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/story/get-stories`, {
+            withCredentials: true,
+          });
+          console.log(response , " in site")
+          if(response.data!= null){
+            
+            set({sites: response.data.stories})
+          }
+        }catch(err){
+          toast.error(err.response.data.message)
+        }finally{
+          set({loading:false})
+        }
+      },
+      getWorkshops: async()=>{
+        try{
+          set({loading:true})
+          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/workshop/get-workshops`, {
+            withCredentials: true,
+          });
+          if(response.data!= null){
+            set({workshops: response.data.workshops})
+          }
+        }catch(err){
+          toast.error(err.response.data.message)
+        }finally{
+          set({loading:false})
+        }
+      },
+      getProducts: async()=>{
+        try{
+          set({loading:true})
+          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/product/get-products`, {
+            withCredentials: true,
+          });
+        
+          if(response.data!= null){
+            set({products: response.data.products})
+          }
+        }catch(err){
+          toast.error(err.response.data.message)
+        }finally{
+          set({loading:false})
+        }
+      },
+      //update operations
+      updateSite: async(id, data)=>{
+        try{
+          set({loading:true})
+          const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/story/update-story/${id}`, data, {
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          if(response.data!= null){
+            set(state=>({
+              sites: state.sites.map(site=>site._id === id? response.data.story : site),
+            }))
+            toast.success("site updated successfully !")
+          }
+        }catch(err){
+          toast.error(err.response.data.message)
+        }finally{
+          set({loading:false})
+        }
+      },
+      updateWorkshop: async(id, data)=>{
+        try{
+          set({loading:true})
+          const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/workshop/update-workshop/${id}`, data, {
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          if(response.data!= null){
+            set(state=>({
+              workshops: state.workshops.map(workshop=>workshop._id === id? response.data.workshop : workshop),
+            }))
+            toast.success(response.data.message)
+          }
+        }catch(err){
+          toast.error(err.response.data.message)
+        }finally{
+          set({loading:false})
+        }
+      },
+      updateProduct: async(id, data)=>{
+        try{
+          set({loading:true})
+          const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/product/update-product/${id}`, data, {
             withCredentials: true,
             headers: {
               'Content-Type':'multipart/form-data',
@@ -170,53 +180,83 @@ const AdminStore = create(
           });
           if(response.data!= null){
             set(state=>({
-              restaurants: state.restaurants.map(r=>r._id === response.data.dish.restaurant._id? {...r, dishes:[...r.dishes.filter(d=>d._id!== response.data.dish._id), response.data.dish]} : r),
-              loading: false,
-              restaurant:{...state.restaurant,dishes:[...state.restaurant.dishes.filter(d=>d._id != id), response.data.dish]}
+              products: state.products.map(product=>product._id === id? response.data.product : product),
             }))
-            toast.success(response.data.message);
+            toast.success("product updated successfully !")
           }
         }catch(err){
-          toast.error(err.response.data.message);
+          toast.error(err.response.data.message)
         }finally{
           set({loading:false})
         }
       },
-      deleteDish: async(dishId,restaurantId)=>{
+      //delete operations
+      deleteSite: async(id)=>{
         try{
           set({loading:true})
-          const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/dish/deleteDish/${dishId}`, {
+          const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/site/deleteSite/${id}`, {
             withCredentials: true,
           });
-          console.log(response)
           if(response.data!= null){
             set(state=>({
-              restaurants: state.restaurants.map(r=>r._id === restaurantId? {...r, dishes:[...r.dishes.filter(d=>d._id!== dishId)]} : r),
-              loading: false,
-              restaurant:{...state.restaurant, dishes:state.restaurant.dishes.filter(d=>d._id!== dishId)}
+              sites: state.sites.filter(site=>site._id!= id),
             }))
-            toast.success(response.data.message);
+            toast.success(response.data.message)
           }
         }catch(err){
-          toast.error(err.response.data.message);
+          toast.error(err.response.data.message)
         }finally{
           set({loading:false})
         }
       },
-      getRestaurantById: async(restaurantId)=>{
+      deleteWorkshop: async(id)=>{
         try{
           set({loading:true})
-          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/restaurant/getRestaurant/${restaurantId}`, {
+          const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/workshop/delete-workshop/${id}`, {
             withCredentials: true,
           });
           if(response.data!= null){
-            set({
-              loading: false,
-              restaurant: response.data.restaurant,
-            })
+            set(state=>({
+              workshops: state.workshops.filter(workshop=>workshop._id!= id),
+            }))
+            toast.success(response.data.message)
           }
         }catch(err){
-          toast.error(err.response.data.message);
+          toast.error(err.response.data.message)
+        }finally{
+          set({loading:false})
+        }
+      },
+      deleteProduct: async(id)=>{
+        try{
+          set({loading:true})
+          const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/product/delete-product/${id}`, {
+            withCredentials: true,
+          });
+          if(response.data!= null){
+            set(state=>({
+              products: state.products.filter(product=>product._id!= id),
+            }))
+            toast.success(response.data.message)
+          }
+        }catch(err){
+          toast.error(err.response.data.message)
+        }finally{
+          set({loading:false})
+        }
+      },
+      //other utility methods
+      getSiteById:async(id)=>{
+        try{
+          set({loading:true})
+          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/site/getSiteById/${id}`, {
+            withCredentials: true,
+          });
+          if(response.data!= null){
+            set({site: response.data.story})
+          }
+        }catch(err){
+          toast.error(err.response.data.message)
         }finally{
           set({loading:false})
         }
