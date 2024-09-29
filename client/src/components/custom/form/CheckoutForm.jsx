@@ -1,5 +1,4 @@
 import { useState } from "react";
-import authStore from "@/store/AuthStore";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,10 +7,11 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import orderStore from "@/store/OrderStore";
+import AuthStore from "@/store/AuthStore";
 
 const CheckoutForm = () => {
   const {createOrder,loading:orderLoading} = orderStore()
-  const {user,updateProfile,loading} = authStore()
+  const {user,updateProfile,loading} = AuthStore()
   const [isEditing, setIsEditing] = useState(false);
   const [newAddress, setNewAddress] = useState(user.address);
   const [paymentMethod, setPaymentMethod] = useState("online");

@@ -61,6 +61,7 @@ const AuthStore = create(
               },
              }
           );
+          console.log(response)
           if (response.data != null) {
             set({
               isAuthenticated: true,
@@ -70,6 +71,7 @@ const AuthStore = create(
             toast.success("User Logged in successfully!");
           }
         } catch(error) {
+          console.log(error)
           toast.error(error.response.data.message);
         } finally {
           set({ loading: false });
@@ -91,7 +93,7 @@ const AuthStore = create(
               user: null,
               loading: false,
             });
-            toast.success(response.data.message);
+            toast.success("Users logged out successfully !");
           }
         } catch (error) {
           console.log(error)
@@ -191,12 +193,12 @@ const AuthStore = create(
         }
       }
     ,
-      addItemIntoCart: async(dishDetails)=>{
+      addItemIntoCart: async(productDetails)=>{
         set({ loading: true });
         try {
           const response = await axios.post(
-            `${import.meta.env.VITE_BACKEND_URL}/api/cart/addItemIntoCart`,
-            {dishId:dishDetails._id},
+            `${import.meta.env.VITE_BACKEND_URL}/api/cart/add-item-cart`,
+            {productId:productDetails._id},
             { withCredentials: true }
           );
           console.log(response," in add item into cart  !--------------------------------")
@@ -215,11 +217,11 @@ const AuthStore = create(
           set({ loading: false });
         }
       },
-    removeItemFromCart:async(dishDetails)=>{
+    removeItemFromCart:async(productDetails)=>{
       try{
         const response = await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}/api/cart/removeItemFromCart`,
-          {dishID:dishDetails._id},
+          `${import.meta.env.VITE_BACKEND_URL}/api/cart/remove-item-cart`,
+          {productId:productDetails._id},
           { withCredentials: true }
         );
         if (response.data!= null) {
@@ -237,15 +239,17 @@ const AuthStore = create(
         set({ loading: false });
       }
     },
-    increaseQuantityOfItemInCart:async(dishDetails,quantity)=>{
+    increaseQuantityOfItemInCart:async(productDetails,quantity)=>{
+      console.log(productDetails,quantity);
       try{
-        const response = await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}/api/cart/increaseQuantity`,
-          {dishID:dishDetails._id,
+        const response = await axios.put(
+          `${import.meta.env.VITE_BACKEND_URL}/api/cart/increase-quantity-cart`,
+          {productId:productDetails._id,
             quantity
           },
           { withCredentials: true }
         );
+        console.log(response)
         if (response.data!= null) {
           set(state=>(
             {
@@ -256,16 +260,17 @@ const AuthStore = create(
           toast.success(response.data.message);
         }
       }catch(err){
+        console.log(err)
         toast.error(err.response.data.message);
       }finally{
         set({ loading: false });
       }
     },
-    removeQuantityOfItemCart:async(dishDetails,quantity)=>{
+    removeQuantityOfItemCart:async(productDetails,quantity)=>{
       try{
-        const response = await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}/api/cart/decreaseQuantity`,
-          {dishID:dishDetails._id,
+        const response = await axios.put(
+          `${import.meta.env.VITE_BACKEND_URL}/api/cart/decrease-quantity-cart`,
+          {productId:productDetails._id,
             quantity
           },
           { withCredentials: true }
@@ -280,6 +285,7 @@ const AuthStore = create(
           toast.success(response.data.message);
         }
       }catch(err){
+        console.log(err)
         toast.error(err.response.data.message);
       }finally{
         set({ loading: false });
@@ -288,7 +294,7 @@ const AuthStore = create(
     deleteCart:async()=>{
       try{
         const response = await axios.delete(
-          `${import.meta.env.VITE_BACKEND_URL}/api/cart/deleteCart`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/cart/delete-cart`,
           { withCredentials: true }
         );
         if (response.data!= null) {

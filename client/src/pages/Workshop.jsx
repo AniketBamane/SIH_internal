@@ -1,55 +1,33 @@
 import Workshop from "@/components/custom/card/Workshop";
+import Loading from "@/components/custom/Loading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import WorkShopStore from "@/store/WorkStore";
 import { Search } from "lucide-react";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
-const workshops = [
-  {
-    title: "Traditional Pottery Making",
-    description: "Learn the ancient art of pottery making from expert artisans.",
-    image: "https://media.istockphoto.com/id/1126452727/photo/ceramic-workshop.jpg?s=612x612&w=0&k=20&c=a3T1XOyTYgJ4yxLWQsnFuCOUcyFkcVUAL_yJdlBa4HM=",
-    location: "Rajasthan, India"
-  },
-  {
-    title: "Weaving Workshop",
-    description: "Explore the traditional techniques of weaving from local artisans.",
-    image: "https://wazir.in/wp-content/uploads/2023/04/Indias-Weaving-Industry.png",
-    location: "Assam, India"
-  },
-  {
-    title: "Weaving Workshop",
-    description: "Explore the traditional techniques of weaving from local artisans.",
-    image: "https://wazir.in/wp-content/uploads/2023/04/Indias-Weaving-Industry.png",
-    location: "Assam, India"
-  },
-  {
-    title: "Weaving Workshop",
-    description: "Explore the traditional techniques of weaving from local artisans.",
-    image: "https://wazir.in/wp-content/uploads/2023/04/Indias-Weaving-Industry.png",
-    location: "Assam, India"
-  },
-  {
-    title: "Weaving Workshop",
-    description: "Explore the traditional techniques of weaving from local artisans.",
-    image: "https://wazir.in/wp-content/uploads/2023/04/Indias-Weaving-Industry.png",
-    location: "Assam, India"
-  },
-  {
-    title: "Weaving Workshop",
-    description: "Explore the traditional techniques of weaving from local artisans.",
-    image: "https://wazir.in/wp-content/uploads/2023/04/Indias-Weaving-Industry.png",
-    location: "Assam, India"
-  },
-  {
-    title: "Weaving Workshop",
-    description: "Explore the traditional techniques of weaving from local artisans.",
-    image: "https://wazir.in/wp-content/uploads/2023/04/Indias-Weaving-Industry.png",
-    location: "Assam, India"
-  },
-  
-];
+
 
 const WorkshopPage = () => {
+  const {loading,workshops,getWorkshops} = WorkShopStore()
+  const fetchWorkshops = async()=>{
+    const toastId = toast.loading("please wait...")
+    try{
+      await getWorkshops()
+    }catch(err){
+      toast.error(err.message,{
+        id: toastId,
+      });
+    }finally{
+      setTimeout(()=>{
+        toast.dismiss(toastId)
+      },1000)
+    }
+  }
+  useEffect(()=>{
+   fetchWorkshops()  // fetch workshops on page load
+  },[])
   return (
 
     <div className="container mx-auto px-4 py-8">
@@ -63,14 +41,16 @@ const WorkshopPage = () => {
           <Search />
         </Button>
       </div>
+      {workshops.length ==0 && <h2>no items found ...</h2>}
       {/* First Workshop (Full Width) */}
-      {workshops.length > 0 && <Story workshop={workshops[0]} isFirst={true} />}
+      {workshops?.length > 0 && <Workshop workshop={workshops[0]} isFirst={true} />}
 
       {/* Other Workshops in Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {workshops.slice(1).map((workshop, index) => (
+        {workshops?.slice(1).map((workshop, index) => (
           <Workshop key={index} workshop={workshop} isFirst={false} />
         ))}
+        {loading && <Loading />}
       </div>
     </div>
   );

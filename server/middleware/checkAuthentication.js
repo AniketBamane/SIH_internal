@@ -8,6 +8,7 @@ const checkAuthentication = async(req, res, next) => {
         message: 'No token provided, authorization denied'
       })
     }
+    console.log(token ,"------------------")
     const decoded = await jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     next();

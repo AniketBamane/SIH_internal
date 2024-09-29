@@ -12,7 +12,7 @@ const OrderStore = create(
       createOrder:async()=>{
         try{
           set({loading:true})
-          const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/order/createOrder`,{},{
+          const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/order/create-order`,{},{
             withCredentials: true,
             headers: {
               'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ const OrderStore = create(
         try{
           console.log(orderId)
           set({loading:true})
-          const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/order/deleterOrder/${orderId}`,{
+          const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/order/delete-order/${orderId}`,{
             withCredentials: true,
             headers: {
               'Content-Type': 'application/json',
@@ -77,7 +77,8 @@ const OrderStore = create(
         }finally{
           set({loading:false})
         }
-      }
+      },
+
     }),
   
   )

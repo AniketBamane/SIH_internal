@@ -12,6 +12,10 @@ const OrderSchema = new mongoose.Schema({
     enum:['pending',"completed","Cancelled"],
     default: "pending"
   },
+  deliveryDate: { 
+    type: Date, 
+    default: () => Date.now() + 24*60*60*1000 
+  },
   deliveryAddress:{
     street: String,
     city: String,
@@ -21,7 +25,7 @@ const OrderSchema = new mongoose.Schema({
     landmark: String,
     country: String
   },
-  status: { type: String, enum: ['pending', 'shipped', 'delivered'], default: 'pending' },
+  status: { type: String, enum: ['pending', 'in-delivery', 'delivered'], default: 'pending' },
 },{
   timestamps:true
 });

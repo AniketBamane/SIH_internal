@@ -2,22 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Edit, Plus, Minus, Check, ArrowLeft, Trash } from 'lucide-react'; // Import Lucide React icons
-import authStore from '@/store/AdminStore';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import Loading from '@/components/custom/Loading';
 import CheckoutForm from '@/components/custom/form/CheckoutForm';
+import AuthStore from '@/store/AuthStore';
 
 const Cart = () => {
-  const {user,loading,removeItemFromCart,increaseQuantityOfItemInCart,removeQuantityOfItemCart} = authStore()
+  const {user,loading,removeItemFromCart,increaseQuantityOfItemInCart,removeQuantityOfItemCart} = AuthStore()
 
   const [editingIndex, setEditingIndex] = useState(null);
   const [done,setDone] = useState(false)
-  const navigate = useNavigate()
 
   const [quantityData, setQuantityData] = useState({
-    newQuantity: null,
+    newQuantity: 1,
     operation: null,
   });
 
@@ -39,7 +37,7 @@ const Cart = () => {
   const handleEditClick = (index) => {
     setEditingIndex(index); 
     setQuantityData({
-      newQuantity: user.cart.dishes[index].quantity, 
+      newQuantity: user?.cart?.products[index].quantity, 
       operation: null,
     });
   };
@@ -56,16 +54,16 @@ const Cart = () => {
     });
   };
 
-  const handleDoneClick = async(dishDetails) => {
+  const handleDoneClick = async(productDetails) => {
     const toastId = toast.loading("please wait, saving changes ...")
      setDone(true);
     console.log(quantityData)
-   
+    console.log(productDetails,"--------------------------")
     try{
      if(quantityData.operation == "increase"){
-      await increaseQuantityOfItemInCart(dishDetails,quantityData.newQuantity)
+      await increaseQuantityOfItemInCart(productDetails,quantityData.newQuantity)
      }else{
-      await removeQuantityOfItemCart(dishDetails,quantityData.newQuantity)
+      await removeQuantityOfItemCart(productDetails,quantityData.newQuantity)
      }
     }catch(err){
       toast.error(err.message,{
@@ -78,7 +76,7 @@ const Cart = () => {
     }
   };
 
-console.log(user)
+console.log(user , "--------user")
   return (
     <div className="text-gray-900 min-h-screen">
       <main className="container mx-auto px-4 py-8">
@@ -88,26 +86,26 @@ console.log(user)
           { loading ? (
            <Loading />
           ) : null }
-          {user !== null && user?.cart?.dishes.length === 0 ? (
+          { user?.cart?.products?.length === 0 ? (
             <Card className="p-6 bg-white shadow-md rounded-lg">
               <p className="text-center">Your cart is empty.</p>
             </Card>
           ) : (
             <div className="space-y-6">
-              {user?.cart?.dishes.map((item, index) => (
+              {user?.cart?.products?.map((item, index) => (
                 <Card key={index} className="p-6 bg-white shadow-md rounded-lg">
                   <div className="flex items-center mb-4">
                     <img
-                      src={item.dish.imageUrl}
-                      alt={item.dish.name}
+                      src={item.product.image}
+                      alt={item.product.name}
                       className="w-16 h-16 object-cover rounded-md mr-4"
                     />
                     <div className="flex-1">
                       <div className='flex justify-between'>
-                      <div className="font-semibold">{item.dish.name}</div>
-                      <Trash className='cursor-pointer' onClick={()=>handleDeleteItem(item.dish)} disabled={loading} />
+                      <div className="font-semibold">{item.product.name}</div>
+                      <Trash className='cursor-pointer' onClick={()=>handleDeleteItem(item.product)} disabled={loading} />
                       </div>
-                      <div>Description: {item.dish.description}</div>
+                      <div>Description: {item.product.description}</div>
                       <div className="flex items-center mt-2">
                         {editingIndex === index ? (
                           <>
@@ -128,7 +126,7 @@ console.log(user)
                             </Button>
                            {!done && (
                              <Button
-                             onClick={()=>handleDoneClick(item.dish)}
+                             onClick={()=>handleDoneClick(item.product)}
                              className="ml-4 text-green-600"   
                            >
                              <Check size={16} />
@@ -146,7 +144,7 @@ console.log(user)
                           </>
                         )}
                       </div>
-                      <div>Price of single dish: ${item.dish.price}</div>
+                      <div>Price of single dish: ${item.product.price}</div>
                     </div>
                   </div>
                 </Card>
@@ -161,7 +159,7 @@ console.log(user)
           )}
         </section>
 
-        {user?.cart?.dishes.length > 0 && (
+        {user?.cart?.products?.length > 0 && (
           <div className="mt-8 flex justify-center">
             <Dialog>
               <DialogTrigger>

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';  // Shadcn UI Button
 import AuthStore from '@/store/AuthStore';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   const {loading,login} = AuthStore()
@@ -60,7 +61,7 @@ const Login = () => {
         <div className="bg-white rounded-lg shadow-md p-8 w-full max-w-sm">
           <h2 className="text-2xl font-bold mb-6 text-center">Login to Your Account</h2>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className='space-y-3'>
             {/* Email Field */}
             <div className="mb-4">
               <label htmlFor="email" className="block text-sm font-medium mb-1">
@@ -104,6 +105,7 @@ const Login = () => {
                {loading ?<Loader2 className='w-4 h-4 animate-spin' />:null } Login
               </Button>
             </div>
+            <Link to={"/verification"} className='text-sm font-thin underline'>don't have any account ? , signup !</Link>
           </form>
         </div>
       </div>

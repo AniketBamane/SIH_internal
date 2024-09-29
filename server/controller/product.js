@@ -28,6 +28,16 @@ export const getProducts = async(req,res,next) => {
   }
 }
 
+export const getAllProducts = async(req,res,next)=>{
+  console.log("---------------------getAllProducts")
+  try{
+    const products = await Product.find().sort({createdAt: -1}).populate("artisanId");
+    res.status(200).json({products});
+  }catch(err){
+    res.status(500).json({message: err.message});
+  }
+}
+
 export const getProductById = async(req,res,next) => {
   try{
     const product = await Product.findById(req.params.id);
@@ -73,3 +83,11 @@ export const deleteProduct = async(req,res,next) => {
   }
 }
 
+export const getProductOParticularSite = async(req,res,next)=>{
+  try{
+    const products = await Product.find({story: req.params.id}).sort({createdAt: -1}).populate("artisanId");
+    res.status(200).json({products});
+  }catch(err){
+    res.status(500).json({message: err.message});
+  }
+}

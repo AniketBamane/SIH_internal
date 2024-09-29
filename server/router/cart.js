@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.route("/add-item-cart").post(checkAuthentication,addItemIntoCart)
 
-router.route("/remove-item-cart").delete(checkAuthentication,removeItemFromCart)
+router.route("/remove-item-cart").post(checkAuthentication,removeItemFromCart)
 
 router.route("/increase-quantity-cart").put(checkAuthentication,increaseQuantityOfDishInCart)
 

@@ -44,8 +44,9 @@ export const removeItemFromCart = async(req, res, next) => {
   }
 
 
-  export const  increaseQuantityOfDishInCart = async(req,res,next)=>{
+  export const  increaseQuantityOfDishInCart = async(req,res)=>{
     try{
+      console.log("--------------increaseQuantityOfDishInCart")
       const {productId,quantity} = req.body
       const user = req.user;
       const currentUser = await User.findById(user.id);

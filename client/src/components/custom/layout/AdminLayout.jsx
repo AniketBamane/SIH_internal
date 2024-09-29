@@ -9,7 +9,7 @@ const AdminLayout = () => {
   const navigate = useNavigate()
   const {user} = AuthStore()
   useEffect(()=>{
-    if(user.role != "artisan"){
+    if(user?.role != "artisan"){
       navigate("/")
     }
   },[navigate,user])

@@ -3,8 +3,25 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/componen
 import { Button } from '@/components/ui/button'; // Shadcn UI Button
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import UpdateProduct from '../form/UpdateProduct';
+import AuthStore from '@/store/AuthStore';
+import { toast } from 'sonner';
 
 const Product = ({ product,page="" }) => {
+  const {addItemIntoCart,loading} = AuthStore()
+  const handleAddToCart = async ()=>{
+    const toastId = toast.loading("please wait...")
+    try{
+      await addItemIntoCart(product)
+    }catch(err){
+      toast.error(err.message,{
+        id: toastId,
+      });
+    }finally{
+      setTimeout(()=>{
+        toast.dismiss(toastId)
+      },1000)
+    }
+  }
   return (
     <Card className="w-full max-w-sm mx-auto rounded-lg shadow-md overflow-hidden">
       {/* Product Image */}
@@ -30,7 +47,7 @@ const Product = ({ product,page="" }) => {
 
       {/* Footer with Action Button */}
       <CardFooter className="p-4 flex justify-between">
-      { page != "myproducts" ?  <Button className="bg-[#8B4513] text-white">Add to Cart</Button> : 
+      { page != "myproducts" ?  <Button className="bg-[#8B4513] text-white" disabled={loading} onClick={handleAddToCart}>Add to Cart</Button> : 
      <Dialog>
       <DialogTrigger>
       <Button className="bg-[#8B4513] text-white">edit product</Button>

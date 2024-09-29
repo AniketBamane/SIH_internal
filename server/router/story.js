@@ -16,3 +16,4 @@ router.route("/update-story/:id").put(checkAuthentication,upload,updateStory)
 router.route("/get-story/:id").get(checkAuthentication,getStoryById)
 
 export default router
+

@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import UpdateProduct from "../form/UpdateProduct";
 import UpdateWorkshop from "../form/UpdateWorkshop";
 import AdminStore from "@/store/AdminStore";
 import { toast } from "sonner";
@@ -24,7 +23,6 @@ const Workshop = ({ workshop, isFirst ,page="" }) => {
       }, 1000);
     }
   }
-  // First workshop card will have a different design
   if (isFirst) {
     return (
       <Card className="w-full mb-8 shadow-lg rounded-lg overflow-hidden">
@@ -46,7 +44,7 @@ const Workshop = ({ workshop, isFirst ,page="" }) => {
         {/* Call to Action Button */}
         <CardFooter className="p-6 flex justify-end">
          {
-          page="myworkshops" ?
+          page=="myworkshops" ?
           <div className="space-x-2">
           <Dialog>
             <DialogTrigger>

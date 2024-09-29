@@ -1,44 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Site from '../components/custom/card/Site'; // Import the Site component
+import SiteStore from '@/store/SiteStore';
+import Loading from '@/components/custom/Loading';
+import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
 
 const SitePage = () => {
-  const sites = [
-    {
-      title: "Historical Fort",
-      content: "Explore the rich history and stunning architecture of this ancient fort.",
-      image: "/contact.jpg",  // Replace with your image URL
-      location: "Maharashtra, India",
-    },
-    {
-      title: "Cultural Village",
-      content: "Visit our vibrant cultural village showcasing local arts and crafts.",
-      image: "/contact.jpg",  // Replace with your image URL
-      location: "Uttar Pradesh, India",
-    },
-    {
-      title: "Scenic Lake",
-      content: "Enjoy the breathtaking views and serene environment of our scenic lake.",
-      image: "/contact.jpg",  // Replace with your image URL
-      location: "Himachal Pradesh, India",
-    },
-    {
-      title: "Mountain Trail",
-      content: "Embark on an adventurous journey through our scenic mountain trails.",
-      image: "/contact.jpg",  // Replace with your image URL
-      location: "Sikkim, India",
-    },
-  ];
-
+  const {loading,sites,getSites} = SiteStore()
+  const fetchSites = async()=>{
+    const toastId = toast.loading("please wait...")
+    try{
+      await getSites()
+    }catch(err){
+      toast.error(err.message,{
+        id: toastId,
+      });
+    }finally{
+      setTimeout(()=>{
+        toast.dismiss(toastId)
+      },1000)
+    }
+  }
+  useEffect(()=>{
+    fetchSites()
+  },[])
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* First Site taking full width */}
       <div className="mb-8">
-        <Site site={sites[0]} fullWidth={true} />
+       {sites?.length == 0 ? <h2>no items found !</h2>: <Site site={sites[0]} fullWidth={true} />}
       </div>
-
-      {/* Other Sites in grid layout */}
+     {loading && <Loading />}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sites.slice(1).map((site, index) => (
+        {sites?.slice(1).map((site, index) => (
           <Site key={index} site={site} />
         ))}
       </div>

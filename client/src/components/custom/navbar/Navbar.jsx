@@ -15,18 +15,20 @@ const Navbar = () => {
   return (
     <header className="flex justify-between items-center p-6 mt-2 rounded-lg shadow-xl">
     {
-      user.role != "artisan" ?
+      user?.role != "artisan" ?
       <Link className=" text-3xl font-bold" to={"/"}>Crafts <span className='text-yellow-700'>Connect</span></Link>:
       <div className=" text-3xl font-bold" to={"/"}>Crafts <span className='text-yellow-700'>Connect</span></div>
     }
       <nav>
         <ul className="flex space-x-5">
           {
-            user.role != "artisan" ?
+            user?.role != "artisan" ?
           <>
           <li><Link to={"/marketplace"} className=" hover:bg-yellow-800 hover:text-white p-2  hover:rounded-lg">Marketplace</Link></li>
           <li><Link to={"/workshop"} className=" hover:bg-yellow-800 hover:text-white p-2  hover:rounded-lg">Workshops</Link></li>
           <li><Link to={"/heritage-sites"} className=" hover:bg-yellow-800 hover:text-white p-2  hover:rounded-lg">Heritage Sites</Link></li>
+          <li><Link to={"/orders"} className=" hover:bg-yellow-800 hover:text-white p-2  hover:rounded-lg"> My orders</Link></li>
+          <li><Link to={"/cart"} className=" hover:bg-yellow-800 hover:text-white p-2  hover:rounded-lg">Cart</Link></li>
           </>
            :
            <>
@@ -42,7 +44,7 @@ const Navbar = () => {
 <Popover>
   <PopoverTrigger>  
     <Avatar>
-  <AvatarImage src="https://github.com/shadcn.png" />
+  <AvatarImage src={user?.profilePic} />
 </Avatar></PopoverTrigger>
   <PopoverContent>
     <Profile />

@@ -4,8 +4,10 @@ import { Button } from '@/components/ui/button'; // Shadcn UI Button
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import CreateProduct from '../form/CreateProduct';
 import UpdateSite from '../form/UpdateSite';
+import { useNavigate } from 'react-router-dom';
 
 const Site = ({ site ,page="" }) => {
+  const navigate = useNavigate()
   return (
     <Card className={`rounded-lg shadow-md overflow-hidden `}>
       {/* Site Image */}
@@ -31,7 +33,9 @@ const Site = ({ site ,page="" }) => {
       <CardFooter className="p-4 flex justify-between">
         {
           page != "mysites" ?
-          <Button className="bg-[#8B4513] text-white">Learn More</Button>
+          <Button className="bg-[#8B4513] text-white" onClick={()=>{
+            navigate(`/site/${site._id}`)
+          }}>Learn More</Button>
           :
           <>
           <Dialog>
