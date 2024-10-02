@@ -32,3 +32,5 @@ export const verificationTemplate = `
   </table>
 </div>
 `
+
+

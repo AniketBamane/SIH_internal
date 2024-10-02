@@ -4,26 +4,30 @@ import authStore from '@/store/AuthStore'
 import Footer from '../footer/Footer'
 import Navbar from '../navbar/Navbar'
 import Loading from '../Loading'
+import OrderStore from '@/store/OrderStore'
+import WorkShopStore from '@/store/WorkStore'
 
 const Layout = () => {
 
   // const {getOrders} = orderStore()
-  const {getCurrentUser} = authStore()
+  const {isAuthenticated,user,getCurrentUser} = authStore()
+  const navigate = useNavigate()
+  const {getOrders} = OrderStore()
+  const {getMyWorkshops} = WorkShopStore()
   const [loading,setLoading] = useState(false)
   const [error,setError] =  useState("")
   const fetchEverything = async ()=>{
    setLoading(true)
    try{
-    await Promise.all([getCurrentUser()]);
+    await Promise.all([getCurrentUser(),getOrders(),getMyWorkshops()]);
     }catch(err){
+      console.log(err)
      setError(err.message)
     }finally{
      setLoading(false)
     }
   }
 
-  const {isAuthenticated,user} = authStore()
-  const navigate = useNavigate()
   useEffect(()=>{
     if(!isAuthenticated){
       navigate("/login")

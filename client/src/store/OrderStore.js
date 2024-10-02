@@ -62,7 +62,7 @@ const OrderStore = create(
       getOrders:async()=>{
         try{
           set({loading:true})
-          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/order/getOrders`,{
+          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/order/get-orders`,{
             withCredentials: true,
             headers: {
               'Content-Type': 'application/json',

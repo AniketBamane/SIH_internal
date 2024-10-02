@@ -18,6 +18,7 @@ import MyWorkshops from './pages/Admin/MyWorkshops'
 import MySites from './pages/Admin/MySites'
 import AdminLayout from './components/custom/layout/AdminLayout'
 import SiteDetail from './pages/SiteDetail'
+import MyWorkshop from './pages/MyWorkshop'
 // import AuthStore from './store/AuthStore'
 // import Loading from './components/custom/Loading'
 
@@ -58,6 +59,7 @@ function App() {
       <Route path="/about-us" element={<AboutUs />} />
       <Route path="/contact-us" element={<ContactUs />} />
       <Route path="/workshop" element={<WorkshopPage />} />
+      <Route path="/myworkshops" element={<MyWorkshop />} />
       <Route path='/orders' element={<Order />} />
       <Route path='/cart' element={<Cart />} />
       <Route path='/marketplace' element={<MarketPlace />} />

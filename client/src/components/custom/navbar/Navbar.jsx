@@ -28,6 +28,7 @@ const Navbar = () => {
           <li><Link to={"/workshop"} className=" hover:bg-yellow-800 hover:text-white p-2  hover:rounded-lg">Workshops</Link></li>
           <li><Link to={"/heritage-sites"} className=" hover:bg-yellow-800 hover:text-white p-2  hover:rounded-lg">Heritage Sites</Link></li>
           <li><Link to={"/orders"} className=" hover:bg-yellow-800 hover:text-white p-2  hover:rounded-lg"> My orders</Link></li>
+          <li><Link to={"/myworkshops"} className=" hover:bg-yellow-800 hover:text-white p-2  hover:rounded-lg"> My Workshops</Link></li>
           <li><Link to={"/cart"} className=" hover:bg-yellow-800 hover:text-white p-2  hover:rounded-lg">Cart</Link></li>
           </>
            :

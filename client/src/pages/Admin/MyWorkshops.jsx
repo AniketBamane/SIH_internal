@@ -66,7 +66,7 @@ const MyWorkshops = () => {
       {loading && <Loading />}
       {/* First Workshop (Full Width) */}
       <div className="mb-8">
-       { workshops && <Workshop workshop={workshops[0]} isFirst={true} />}
+       { workshops && <Workshop workshop={workshops[0]} isFirst={true} page='myworkshops' />}
       </div>
 
       {/* Other Workshops in Grid */}

@@ -1,5 +1,8 @@
 import { uploadFileOnCloudinary } from "../config/cloudinary.js";
+import transporter from "../config/transporter.js";
+import User from "../model/user.js";
 import WorkShop from "../model/workshop.js";
+import { bookingWorkshop } from "../template/bookingTemplate.js";
 
 export const createWorkshop = async(req,res,next) => {
   try{
@@ -86,13 +89,29 @@ export const bookWorkshop = async(req,res,next) => {
     const userId = req.user.id
     const workshopId = req.params.id
     const workshop = await WorkShop.findById(workshopId);
+    const user = await User.findById(userId);
     if(workshop){
       if(workshop.participants.includes(userId)){
         res.status(400).json({message: 'User already booked this workshop'});
       } else{
         workshop.participants.push(userId);
         await workshop.save();
-        res.status(200).json({message: 'User booked workshop successfully'});
+        const mailOptions = {
+          from: 'aniketbamane696@gmail.com',
+          to: user.email,
+          subject: 'Email Verification',
+          html:bookingWorkshop.replace("{title}", workshop.title)
+          .replace("{description}", workshop.description)
+          .replace("{date}", workshop.date)
+          .replace("{price}", workshop.price)
+          .replace("{image}", workshop.image),
+        };
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            return res.status(500).json({ message: error.message });
+          }       
+          res.status(200).json({message: 'User booked workshop successfully , check email for futher details....'});
+        });
       }
     } else{
       res.status(404).json({message: 'Workshop not found'});
@@ -107,12 +126,14 @@ export const cancelBooking = async(req,res,next) => {
     const userId = req.user.id
     const workshopId = req.params.id
     const workshop = await WorkShop.findById(workshopId);
+    console.log(workshop,"---------------in cancel booking -----------------")
     if(workshop){
       if(!workshop.participants.includes(userId)){
         res.status(400).json({message: 'User has not booked this workshop'});
       } else{
-        workshop.participants = workshop.participants.filter(participant => participant !== userId);
+        workshop.participants = workshop.participants.filter(participant => participant.toString() !== userId);
         await workshop.save();
+        console.log(workshop,"------------after canceling booking -------------------",userId)
         res.status(200).json({message: 'User canceled booking successfully'});
       }
     } else{
@@ -126,8 +147,8 @@ export const cancelBooking = async(req,res,next) => {
 export const getBookingsByUserId = async(req,res,next) => {
   try{
     const userId = req.user.id
-    const workshops = await WorkShop.find({participants: userId});
-    res.status(200).json(workshops);
+    const workshops = await WorkShop.find({participants: userId}).populate("artisanId");
+    res.status(200).json({workshops});
   }catch(err){
     res.status(500).json({message: err.message});
   }
